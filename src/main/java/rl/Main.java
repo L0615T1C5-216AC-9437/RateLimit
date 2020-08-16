@@ -11,17 +11,33 @@ import mindustry.net.ValidateException;
 import mindustry.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static mindustry.Vars.*;
 
 public class Main extends Plugin {
     public static HashMap<String, Long> messageBlockRL = new HashMap<>();
+    public static ConcurrentHashMap<String, AtomicInteger> packet38RL = new ConcurrentHashMap<>(); //rate limit for editing blocks
+    public static Thread cycle;
 
     public Main() {
+        Events.on(EventType.ServerLoadEvent.class, serverLoadEvent -> {
+            cycle c = new cycle(Thread.currentThread());
+            c.setDaemon(false);
+            c.start();
+        });
         Events.on(EventType.ServerLoadEvent.class, event -> {
             net.handleServer(Packets.InvokePacket.class, (con, packet) -> {
                 if(con.player == null) return;
                 try{
+                    if (packet.type == 38) {
+                        packet38RL.putIfAbsent(con.address, new AtomicInteger(0));
+                        if (packet38RL.get(con.address).incrementAndGet() > 100) {
+                            con.kick("Auto Moderator - Griefing (p38)");
+                            Call.sendMessage("[#"+con.player.color+"]"+con.player.name+" [white]Griefed! Mass drivers, sorters and bridges may be affected.");
+                        }
+                    }
                     if (packet.type == 57) {
                         if (messageBlockRL.containsKey(con.address)) {
                             if (messageBlockRL.get(con.address) > Time.millis()) {
