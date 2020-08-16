@@ -2,13 +2,12 @@ package rl;
 
 import arc.util.Log;
 import arc.util.Time;
+import mindustry.gen.Call;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class cycle extends Thread {
     private Thread MainT;
-    private HashMap<Integer, Integer> spawnTimer = new HashMap<Integer, Integer>();
 
     public cycle(Thread main) {
         MainT = main;
@@ -35,6 +34,7 @@ public class cycle extends Thread {
                     nexSecond = Time.millis() + 1000;
                     //run
                     Main.packet38RL.clear();
+                    if (!Main.warn.equals("")) Call.sendMessage(Main.warn);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

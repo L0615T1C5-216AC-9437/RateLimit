@@ -20,6 +20,7 @@ public class Main extends Plugin {
     public static HashMap<String, Long> messageBlockRL = new HashMap<>();
     public static ConcurrentHashMap<String, AtomicInteger> packet38RL = new ConcurrentHashMap<>(); //rate limit for editing blocks
     public static Thread cycle;
+    public static String warn = "";
 
     public Main() {
         Events.on(EventType.ServerLoadEvent.class, serverLoadEvent -> {
@@ -35,7 +36,7 @@ public class Main extends Plugin {
                         packet38RL.putIfAbsent(con.address, new AtomicInteger(0));
                         if (packet38RL.get(con.address).incrementAndGet() > 100) {
                             con.kick("Auto Moderator - Griefing (p38)");
-                            Call.sendMessage("[#"+con.player.color+"]"+con.player.name+" [white]Griefed! Mass drivers, sorters and bridges may be affected.");
+                            warn = "[#"+con.player.color+"]"+con.player.name+" [white]Griefed! Mass drivers, sorters and bridges may be affected.";
                         }
                     }
                     if (packet.type == 57) {
