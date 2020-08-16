@@ -2,7 +2,8 @@
 ![Java CI](https://github.com/L0615T1C5-216AC-9437/RateLimit/workflows/Java%20CI/badge.svg)
 
 ### Description
-Message Block rate Limit. This is a counter to o7 Message ddos.
+Message Block rate Limit. This is a counter to o7 Message ddos.  
+v104.1 - Sorter/Bridge/Massdriver rate limit with warning.
 
 ### Building a Jar
 
