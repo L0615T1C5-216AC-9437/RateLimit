@@ -3,6 +3,7 @@
 
 ### Description
 Message Block rate Limit. This is a counter to o7 Message ddos.
+v104.1 - Sorter/Bridge/Massdriver rate limit with warning.
 
 ### Building a Jar
 
